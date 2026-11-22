@@ -1,1 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111713">
+  <meta name="description" content="Portal oficial do RPG GULOSOS ADVENTURES. Explore o universo e consulte as regras e livros.">
+  <title>GULOSOS ADVENTURES — RPG</title>
+  <style>
+    :root {
+      --bg: #111713;
+      --bg-soft: #171f19;
+      --panel: rgba(28, 38, 30, .78);
+      --panel-strong: #202b22;
+      --text: #f0eee5;
+      --muted: #b2b6a8;
+      --gold: #c5a66a;
+      --gold-light: #e0c58c;
+      --line: rgba(197, 166, 106, .22);
+      --green: #82927a;
+      --shadow: 0 24px 70px rgba(0,0,0,.28);
+    }
 
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 75% 5%, rgba(101, 119, 83, .18), transparent 36rem),
+        radial-gradient(ellipse at 8% 45%, rgba(119, 91, 49, .10), transparent 32rem),
+        var(--bg);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    .site-shell { width: min(1100px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      letter-spacing: .12em;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+    .brand-mark {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      color: var(--gold-light);
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+      font-size: 1rem;
+    }
+    .brand-mark span { transform: rotate(-45deg); }
+    nav { display: flex; align-items: center; gap: 8px; }
+    .tab {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 11px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: .88rem;
+      transition: .2s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] {
+      color: var(--gold-light);
+      border-color: var(--line);
+      background: rgba(197,166,106,.07);
+    }
+    main { min-height: calc(100vh - 150px); }
+    .page { display: none; animation: appear .35s ease both; }
+    .page.active { display: block; }
+    @keyframes appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero {
+      position: relative;
+      min-height: 590px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 86px 0 100px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 35px -10vw 25px 28%;
+      opacity: .56;
+      background:
+        linear-gradient(180deg, transparent 58%, var(--bg) 100%),
+        linear-gradient(90deg, var(--bg) 0%, transparent 45%),
+        url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=85") center 48% / cover;
+      filter: saturate(.55) brightness(.55);
+      mask-image: linear-gradient(90deg, transparent, #000 30%, #000 80%, transparent);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 650px; }
+    .eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--gold);
+      font: 700 .72rem/1.4 Arial, sans-serif;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--gold); }
+    h1 {
+      max-width: 720px;
+      margin: 24px 0 18px;
+      font-size: clamp(2.8rem, 7vw, 5.7rem);
+      line-height: .98;
+      font-weight: 500;
+      letter-spacing: -.045em;
+    }
+    h1 span { display: block; color: var(--gold-light); font-style: italic; }
+    .hero-copy {
+      max-width: 490px;
+      color: #c4c6bb;
+      font: 1rem/1.8 Arial, sans-serif;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .button {
+      display: inline-flex; justify-content: center; align-items: center;
+      min-height: 46px; padding: 0 20px;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      text-decoration: none;
+      font: 700 .8rem Arial, sans-serif;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .button.primary { background: var(--gold); color: #171911; }
+    .button.primary:hover { background: var(--gold-light); border-color: var(--gold-light); }
+    .button.secondary { color: var(--gold-light); background: rgba(17,23,19,.35); }
+    .button.secondary:hover { background: rgba(197,166,106,.12); }
+    .hero-note {
+      position: absolute; right: 0; bottom: 46px;
+      color: rgba(240,238,229,.56);
+      font: .68rem Arial, sans-serif;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .intro-strip {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 50px; padding: 42px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+    .intro-strip h2 { margin: 0; font-size: 1.7rem; font-weight: 500; }
+    .intro-strip p { margin: 0; color: var(--muted); font: .94rem/1.8 Arial, sans-serif; }
+
+    .section-head { padding: 76px 0 36px; }
+    .section-head h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin: 17px 0 12px; }
+    .section-head p { max-width: 620px; color: var(--muted); font: .98rem/1.8 Arial, sans-serif; }
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      padding-bottom: 90px;
+    }
+    .book-card {
+      min-height: 190px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: linear-gradient(145deg, rgba(37,49,39,.92), rgba(24,32,26,.82));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .book-card:hover { transform: translateY(-3px); border-color: rgba(197,166,106,.48); }
+    .book-top { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .book-number { color: var(--gold); font: .7rem Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+    .pdf-icon {
+      width: 34px; height: 40px; display: grid; place-items: center;
+      border: 1px solid rgba(197,166,106,.4); color: var(--gold-light);
+      font: 700 .65rem Arial, sans-serif;
+    }
+    .book-card h2 { margin: 22px 0 8px; font-size: 1.45rem; font-weight: 500; }
+    .book-card p { margin: 0 0 22px; color: var(--muted); font: .86rem/1.6 Arial, sans-serif; }
+    .book-card .button { margin-top: auto; min-height: 40px; padding: 0 15px; }
+    .note {
+      margin: -52px 0 76px;
+      padding: 15px 18px;
+      border-left: 2px solid var(--gold);
+      background: rgba(197,166,106,.06);
+      color: var(--muted);
+      font: .82rem/1.7 Arial, sans-serif;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 25px 0 32px;
+      display: flex; justify-content: space-between; gap: 16px;
+      color: rgba(178,182,168,.7);
+      font: .75rem Arial, sans-serif;
+    }
+    .hidden-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 650px) {
+      .site-shell { width: min(100% - 28px, 1100px); }
+      header { min-height: 74px; align-items: center; flex-wrap: wrap; padding: 15px 0 12px; gap: 12px; }
+      .brand { font-size: .74rem; }
+      nav { width: 100%; }
+      .tab { flex: 1; padding: 10px 7px; font-size: .8rem; }
+      .hero { min-height: 540px; padding: 75px 0 100px; }
+      .hero::before { inset: 80px -35vw 15px 0; opacity: .38; }
+      .hero-note { bottom: 28px; left: 0; right: auto; }
+      .intro-strip { grid-template-columns: 1fr; gap: 15px; padding: 30px 0 52px; }
+      .section-head { padding: 58px 0 28px; }
+      .library-grid { grid-template-columns: 1fr; gap: 12px; padding-bottom: 75px; }
+      .note { margin: -42px 0 55px; }
+      footer { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header>
+      <a class="brand" href="#" aria-label="GULOSOS ADVENTURES — Início" data-tab-link="inicio">
+        <span class="brand-mark"><span>✦</span></span>
+        <span>GULOSOS ADVENTURES</span>
+      </a>
+      <nav aria-label="Navegação principal" role="tablist">
+        <button class="tab" id="tab-inicio" role="tab" aria-controls="inicio" aria-selected="true" data-tab="inicio">Início</button>
+        <button class="tab" id="tab-biblioteca" role="tab" aria-controls="biblioteca" aria-selected="false" data-tab="biblioteca">Regras &amp; Livros</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page active" id="inicio" role="tabpanel" aria-labelledby="tab-inicio">
+        <div class="hero">
+          <div class="hero-content">
+            <div class="eyebrow">Um mundo de histórias</div>
+            <h1>GULOSOS <span>ADVENTURES</span></h1>
+            <p class="hero-copy">
+              Toda grande aventura começa com uma escolha. Descubra um universo de
+              fantasia, explore suas histórias e escreva seu próprio caminho.
+            </p>
+            <div class="actions">
+              <button class="button primary" type="button" data-tab="biblioteca">Explorar regras &amp; livros</button>
+              <!-- Adicione o convite do Discord quando quiser disponibilizá-lo. -->
+            </div>
+          </div>
+          <div class="hero-note">Sua jornada começa aqui</div>
+        </div>
+
+        <div class="intro-strip">
+          <h2>Mais do que um jogo.<br><em>Uma aventura compartilhada.</em></h2>
+          <p>
+            Prepare seu personagem, conheça as regras e faça parte de um mundo
+            construído pelas escolhas de seus aventureiros.
+          </p>
+        </div>
+      </section>
+
+      <section class="page" id="biblioteca" role="tabpanel" aria-labelledby="tab-biblioteca" hidden>
+        <div class="section-head">
+          <div class="eyebrow">Biblioteca do aventureiro</div>
+          <h1>Regras <span style="color:var(--gold-light);font-style:italic">&amp; Livros</span></h1>
+          <p>
+            Consulte os materiais oficiais do GULOSOS ADVENTURES. Escolha um documento
+            para abrir a leitura em uma nova aba.
+          </p>
+        </div>
+
+        <div class="library-grid">
+          <article class="book-card">
+            <div class="book-top"><span class="book-number">Volume I</span><span class="pdf-icon">PDF</span></div>
+            <h2>Livro I</h2>
+            <p>Primeiro volume da biblioteca de aventuras.</p>
+            <a class="button secondary" href="https://drive.google.com/file/d/1whCxskWaJFt6r69BUbjVCHyA0SbEadCP/preview" target="_blank" rel="noopener noreferrer">Ler documento ↗</a>
+          </article>
+          <article class="book-card">
+            <div class="book-top"><span class="book-number">Volume II</span><span class="pdf-icon">PDF</span></div>
+            <h2>Livro II</h2>
+            <p>Segundo volume da biblioteca de aventuras.</p>
+            <a class="button secondary" href="https://drive.google.com/file/d/1UPXlNv33ANKjbGx1XJ4-TT2Bd9cTHBwE/preview" target="_blank" rel="noopener noreferrer">Ler documento ↗</a>
+          </article>
+          <article class="book-card">
+            <div class="book-top"><span class="book-number">Volume III</span><span class="pdf-icon">PDF</span></div>
+            <h2>Livro III</h2>
+            <p>Terceiro volume da biblioteca de aventuras.</p>
+            <a class="button secondary" href="https://drive.google.com/file/d/13v8gpvsot6I_VB37g9qjMf21tUra5dG6/preview" target="_blank" rel="noopener noreferrer">Ler documento ↗</a>
+          </article>
+          <article class="book-card">
+            <div class="book-top"><span class="book-number">Documento oficial</span><span class="pdf-icon">PDF</span></div>
+            <h2>Regras</h2>
+            <p>Consulte as regras oficiais do servidor.</p>
+            <a class="button secondary" href="https://drive.google.com/file/d/1nOUJadDMmNcyt-4pw8udbQudOy4JaLwE/preview" target="_blank" rel="noopener noreferrer">Ler documento ↗</a>
+          </article>
+        </div>
+        <p class="note">Se um documento não abrir, confirme no Google Drive se o compartilhamento está definido como “Qualquer pessoa com o link — Leitor”.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="year"></span> GULOSOS ADVENTURES</span>
+      <span>Um universo de fantasia e aventura.</span>
+    </footer>
+  </div>
+
+  <script>
+    const tabs = [...document.querySelectorAll('[data-tab]')];
+    const pages = [...document.querySelectorAll('.page')];
+
+    function showTab(name) {
+      pages.forEach(page => {
+        const active = page.id === name;
+        page.classList.toggle('active', active);
+        page.hidden = !active;
+      });
+      document.querySelectorAll('[role="tab"]').forEach(tab => {
+        const active = tab.dataset.tab === name;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    tabs.forEach(tab => tab.addEventListener('click', () => showTab(tab.dataset.tab)));
+    document.querySelectorAll('[data-tab-link]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        showTab(link.dataset.tabLink);
+      });
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
